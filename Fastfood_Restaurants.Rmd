@@ -1,0 +1,67 @@
+---
+title: "Fastfood Restaurants"
+output: html_notebook
+---
+
+Looking only at Burger King and Chick-Fil-A, which item has the highest calories?
+
+```{r}
+# Filtered by Burger King and Chick Fil-A, then grouped by item and sorted from highest to lowest amount of calories in each item, and selected the highest caloric food item.
+
+Q1 <- fastfood %>% 
+  filter(restaurant %in% c('Burger King', 'Chick Fil-A')) %>%  
+  group_by(item) %>% 
+  arrange(desc(calories)) %>% 
+  select(item) %>% 
+  head(1)
+  
+```
+
+What is the mean sugar amount for all items from Subway?
+```{r}
+# Filtered by Subway and performed a statistical analysis to get the mean of sugar.
+
+Q2 <- fastfood %>% 
+  filter(restaurant == 'Subway') %>% 
+  summarize(mean_sugar = mean(sugar)) %>% 
+  select(mean_sugar) %>% 
+  as.data.frame()
+```
+
+
+What is the mean value of calories for all items from Taco Bell?  
+```{r}
+# Filtered by Taco Bell and performed a statistical analysis to get the mean of calories.
+
+Q3 <- fastfood %>% 
+  filter(restaurant == 'Taco Bell') %>% 
+  summarize(mean_calories = mean(calories)) %>% 
+  select(mean_calories) %>% 
+  as.data.frame()
+```
+
+
+Create a variable equal to total_fat x sugar called fatXsugar.  Produce a tibble that has the restaurant, item, and fatXsugar for the top 3 items, from highest to lowest.
+```{r}
+# Created a variable called fatXsugar using total_fat times sugar and sorted it from highest to lowest and viewed the top 3 items that have the highest fat*sugar.
+
+Q4 <- fastfood %>% 
+  mutate(fatXsugar = total_fat * sugar) %>% 
+  arrange(desc(fatXsugar)) %>% 
+  select(restaurant, item, fatXsugar) %>% 
+  head(3)
+```
+
+
+How many restaurants have an average saturated fat over 10?
+```{r}
+# Started off by grouping by restaurant and performed a statistical analysis to get the mean of saturated fat and filter by average fat > 10. Used nrow() to see the number of restaurants that have an average saturated fat of over 10.
+
+Q5 <- fastfood %>% 
+  group_by(restaurant) %>% 
+  summarize(avg_sat = mean(sat_fat)) %>% 
+  filter(avg_sat > 10) %>% 
+  nrow()
+```
+
+
